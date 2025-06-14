@@ -15,32 +15,78 @@ export default function IndexPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   if (!prompt.trim()) return;
+
+  //   const newMessages: Message[] = [...messages, { role: 'user' as const, content: prompt }];
+  //   setMessages(newMessages);
+  //   setPrompt('');
+  //   setLoading(true);
+
+  //   try {
+  //     const result = await ai.models.generateContent({
+  //       model: 'gemini-2.0-flash',
+  //       contents: newMessages.map(m => ({
+  //         role: m.role,
+  //         parts: [{ text: m.content }]
+  //       })),
+  //     });
+  //     const text = result.candidates?.[0]?.content?.parts?.[0]?.text || 'No response from Gemini API';
+  //     setMessages([...newMessages, { role: 'model', content: text }]);
+  //   } catch (err) {
+  //     setMessages([...newMessages, { role: 'model', content: 'Error from Gemini API' }]);
+  //     console.error(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!prompt.trim()) return;
+  e.preventDefault();
+  if (!prompt.trim()) return;
 
-    const newMessages: Message[] = [...messages, { role: 'user' as const, content: prompt }];
-    setMessages(newMessages);
-    setPrompt('');
-    setLoading(true);
+  const userMsg: Message = { role: 'user', content: prompt };
+  const newMessages: Message[] = [...messages, userMsg];
 
-    try {
-      const result = await ai.models.generateContent({
-        model: 'gemini-2.0-flash',
-        contents: newMessages.map(m => ({
-          role: m.role,
-          parts: [{ text: m.content }]
-        })),
-      });
-      const text = result.candidates?.[0]?.content?.parts?.[0]?.text || 'No response from Gemini API';
-      setMessages([...newMessages, { role: 'model', content: text }]);
-    } catch (err) {
-      setMessages([...newMessages, { role: 'model', content: 'Error from Gemini API' }]);
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  setMessages(newMessages);
+  setPrompt('');
+  setLoading(true);
+
+  try {
+    // 🔵 Save user message to DB
+    await fetch('http://localhost:3000/api/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userMsg),
+    });
+
+    const result = await ai.models.generateContent({
+      model: 'gemini-2.0-flash',
+      contents: newMessages.map(m => ({
+        role: m.role,
+        parts: [{ text: m.content }],
+      })),
+    });
+
+    const text = result.candidates?.[0]?.content?.parts?.[0]?.text || 'No response from Gemini API';
+    const modelMsg: Message = { role: 'model', content: text };
+
+    // 🔵 Save model message to DB
+    await fetch('http://localhost:3000/api/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(modelMsg),
+    });
+
+    setMessages([...newMessages, modelMsg]);
+  } catch (err) {
+    console.error(err);
+    setMessages([...newMessages, { role: 'model', content: 'Error from Gemini API' }]);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <DefaultLayout>
