@@ -8,7 +8,7 @@ export const siteConfig = {
     },
      {
       label: "Text generation",
-      href: "/image-to-text",
+      href: "dummy2.flyku.com",
     }
   ]
 };
