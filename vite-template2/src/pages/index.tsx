@@ -207,7 +207,7 @@ export default function TextToImagePage() {
           <div className="mb-8">
             <h1 className="text-4xl font-bold text-blue-800 mb-4 animate-fade-in-up">
               <span className="inline-block animate-waving-hand mr-2">👋</span>
-              Welcome to Gemini Flash Chatbot
+              Welcome to Gemini Flash Chatbot!
             </h1>
             <p className="mb-4 text-lg text-blue-600 animate-fade-in">
               Image generation powered by Gemini 2.0 Flash
