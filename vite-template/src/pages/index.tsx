@@ -253,164 +253,250 @@ export default function TextToImagePage() {
             `}
           </style>
 
-          <Card className="p-8 bg-white/90 rounded-3xl shadow-xl border border-blue-100">
-            <div className="mb-6 max-h-96 overflow-y-auto text-left">
-              {messages.length === 0 ? (
-                <div className="text-gray-400 text-center py-12">
-                  No messages yet. Start the conversation!
+            <Card className="p-0 bg-gradient-to-br from-white via-blue-50 to-blue-100 rounded-[2.5rem] shadow-[0_8px_40px_0_rgba(30,64,175,0.10)] border border-blue-200 max-w-4xl mx-auto w-full overflow-hidden relative z-30" style={{ background: "rgba(255,255,255,0.98)", backdropFilter: "blur(12px)" }}>
+              {/* Decorative Blobs */}
+              <div className="absolute -top-16 -left-16 w-56 h-56 bg-blue-200/40 rounded-full blur-3xl z-10 pointer-events-none" />
+              <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-blue-400/20 rounded-full blur-3xl z-10 pointer-events-none" />
+
+              {/* Header Bar */}
+              <div className="flex items-center justify-between px-10 py-7 bg-gradient-to-r from-blue-700 via-blue-600 to-blue-500 shadow-lg z-10 relative">
+                <div className="flex items-center gap-4">
+                  <span className="text-3xl animate-spin-slow">🌐</span>
+                  <span className="text-2xl font-extrabold text-white tracking-wider drop-shadow-lg">Gemini Flash Chatbot</span>
                 </div>
-              ) : (
-                messages.map((msg, idx) => (
-                  <div
-                    key={idx}
-                    className={`mb-4 flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-                  >
-                    <div
-                      className={`max-w-[75%] px-4 py-3 rounded-2xl shadow ${msg.role === "user" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-900"}`}
-                    >
-                      <span className="block text-xs font-semibold mb-1 opacity-70">
-                        {msg.role === "user" ? "You" : "Gemini"}
-                      </span>
-                      <span
-                        className="whitespace-pre-wrap"
-                        dangerouslySetInnerHTML={{ __html: msg.content }}
-                      />
-                    </div>
+                <span className="text-blue-100 text-base font-semibold tracking-wide bg-blue-900/30 px-4 py-1 rounded-full shadow">Gemini 2.0 Flash</span>
+              </div>
+
+              {/* Chat Area */}
+              <div className="mb-0 max-h-[520px] overflow-y-auto px-10 py-10 bg-white/90 backdrop-blur-xl text-left custom-scrollbar z-10 relative">
+                {messages.length === 0 ? (
+                  <div className="text-gray-400 text-center py-28 text-xl italic select-none">
+                    <span className="inline-block animate-bounce text-4xl mb-3">✨</span>
+                    <br />
+                    <span className="font-semibold">No messages yet.</span>
+                    <br />
+                    <span className="text-base">Start the conversation with a prompt, image, or your voice!</span>
                   </div>
-                ))
-              )}
-              {loading && (
-                <div className="flex justify-start mb-4">
-                  <div className="max-w-[75%] px-4 py-3 rounded-2xl bg-gray-100 text-gray-900 animate-pulse">
-                    <span className="block text-xs font-semibold mb-1 opacity-70">
-                      Gemini
-                    </span>
-                    <span>Thinking...</span>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <form
-              className="flex items-end gap-3 bg-white border border-blue-100 rounded-2xl px-4 py-3 shadow"
-              onSubmit={handleSubmit}
-            >
-              <button
-                type="button"
-                onClick={handleUploadFiles}
-                className="p-2 rounded-full hover:bg-blue-50"
-              >
-                ➕
-              </button>
-
-              <input
-                id="file-upload-input"
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={(e) => {
-                  if (e.target.files)
-                    setSelectedFiles(Array.from(e.target.files));
-                }}
-              />
-
-              {selectedFiles.length > 0 && (
-                <div className="flex gap-2 items-end">
-                  {selectedFiles.map((file, idx) => (
+                ) : (
+                  messages.map((msg, idx) => (
                     <div
                       key={idx}
-                      className="relative group"
-                      style={{ width: 48, height: 48 }}
+                      className={`mb-8 flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                     >
-                      <img
-                        src={URL.createObjectURL(file)}
-                        alt="Selected"
-                        className="w-12 h-12 object-cover rounded-lg border shadow"
-                      />
-                      <button
-                        type="button"
-                        aria-label="Remove image"
-                        className="absolute -top-2 -right-2 bg-white border border-red-300 text-red-500 hover:bg-red-50 hover:text-red-700 rounded-full p-1 shadow-lg transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-red-400"
-                        onClick={() =>
-                          setSelectedFiles(
-                            selectedFiles.filter((_, i) => i !== idx)
-                          )
-                        }
+                      <div
+                        className={`relative max-w-[80%] px-8 py-6 rounded-[2rem] shadow-xl transition-all duration-200 ${
+                          msg.role === "user"
+                            ? "bg-gradient-to-br from-blue-600 to-blue-400 text-white border-2 border-blue-200"
+                            : "bg-gradient-to-br from-white to-blue-50 text-gray-900 border border-blue-100"
+                        }`}
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-4 h-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                      </button>
+                        <span className="block text-xs font-bold mb-2 opacity-80 tracking-wide uppercase">
+                          {msg.role === "user" ? (
+                            <span className="flex items-center gap-1">
+                              <span className="inline-block w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
+                              You
+                            </span>
+                          ) : (
+                            <span className="flex items-center gap-1">
+                              <span className="inline-block w-2 h-2 bg-blue-700 rounded-full" />
+                              Gemini
+                            </span>
+                          )}
+                        </span>
+                        <span
+                          dangerouslySetInnerHTML={{ __html: msg.content }}
+                          className="whitespace-pre-wrap text-base leading-relaxed"
+                        />
+                        {msg.role === "model" && (
+                          <span className="absolute -top-4 -right-4 bg-gradient-to-br from-blue-100 to-blue-300 text-blue-700 px-3 py-1 rounded-full text-xs shadow font-bold border border-blue-200">
+                            AI
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  ))}
-                </div>
-              )}
+                  ))
+                )}
+                {loading && (
+                  <div className="flex justify-start mb-8">
+                    <div className="max-w-[80%] px-8 py-6 rounded-[2rem] bg-gradient-to-br from-white to-blue-50 text-gray-900 animate-pulse shadow-xl border border-blue-100">
+                      <span className="block text-xs font-bold mb-2 opacity-80 tracking-wide uppercase">
+                        Gemini
+                      </span>
+                      <span className="text-base flex items-center gap-2">
+                        <span className="inline-block w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>
+                        Thinking...
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
 
-              <input
-                required={selectedFiles.length === 0}
-                className="flex-1 outline-none text-base px-2 py-2"
-                disabled={loading}
-                maxLength={1000}
-                placeholder="Ask anything"
-                type="text"
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-              />
-
-              {/* Mic icon */}
-              <button
-                className={`p-2 rounded-full hover:bg-blue-50 transition relative ${
-                  listening
-                    ? "bg-blue-100 animate-pulse ring-2 ring-blue-400"
-                    : ""
-                }`}
-                disabled={loading}
-                tabIndex={-1}
-                type="button"
-                onClick={handleVoiceInput}
+              {/* Input Area */}
+              <form
+                className="flex items-end gap-4 bg-white/95 border-t border-blue-100 px-10 py-7 shadow-inner z-10 relative"
+                style={{ backdropFilter: "blur(8px)" }}
+                onSubmit={handleSubmit}
               >
-                <svg
-                  className={`h-6 w-6 ${listening ? "text-blue-600" : "text-gray-500"}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
+                {/* Upload Button */}
+                <button
+                  type="button"
+                  className="p-3 rounded-full hover:bg-blue-50 border border-blue-200 transition shadow-lg bg-white/80"
+                  title="Upload image"
+                  onClick={handleUploadFiles}
                 >
-                  <path
-                    d="M12 18v2m0 0h3m-3 0H9m6-6a3 3 0 01-6 0V9a3 3 0 016 0v6z"
+                  <svg
+                    className="w-7 h-7 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                  />
-                </svg>
-                <span className="sr-only">Voice input</span>
-                {listening && (
-                  <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-blue-500 animate-ping"></span>
-                )}
-              </button>
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 4v16m8-8H4"
+                    />
+                  </svg>
+                </button>
 
-              <button
-                type="submit"
-                className="ml-2 p-2 rounded-full bg-blue-100 hover:bg-blue-200"
-                disabled={
-                  loading || (!prompt.trim() && selectedFiles.length === 0)
-                }
-              >
-                🚀
-              </button>
-            </form>
-          </Card>
+                <input
+                  accept="image/*"
+                  className="hidden"
+                  id="file-upload-input"
+                  type="file"
+                  onChange={(e) => {
+                    if (e.target.files) setSelectedFiles(Array.from(e.target.files));
+                  }}
+                />
+
+                {/* Selected Images Preview */}
+                {selectedFiles.length > 0 && (
+                  <div className="flex gap-3 items-end">
+                    {selectedFiles.map((file, idx) => (
+                      <div
+                        key={idx}
+                        className="relative group"
+                        style={{ width: 56, height: 56 }}
+                      >
+                        <img
+                          alt="Selected"
+                          className="w-14 h-14 object-cover rounded-xl border-2 border-blue-200 shadow-md"
+                          src={URL.createObjectURL(file)}
+                        />
+                        <button
+                          aria-label="Remove image"
+                          className="absolute -top-2 -right-2 bg-white border border-red-300 text-red-500 hover:bg-red-50 hover:text-red-700 rounded-full p-1 shadow-lg transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-red-400"
+                          type="button"
+                          onClick={() =>
+                            setSelectedFiles(selectedFiles.filter((_, i) => i !== idx))
+                          }
+                        >
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Prompt Input */}
+                <input
+                  className="flex-1 outline-none text-base px-5 py-4 rounded-2xl border border-blue-200 focus:ring-2 focus:ring-blue-400 transition bg-white/90 shadow-lg font-medium"
+                  disabled={loading}
+                  maxLength={1000}
+                  placeholder="Type your message, upload an image, or use your voice…"
+                  required={selectedFiles.length === 0}
+                  type="text"
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
+                />
+
+                {/* Voice Input Button */}
+                <button
+                  className={`p-3 rounded-full border border-blue-200 hover:bg-blue-50 transition relative shadow-lg bg-white/80 ${
+                    listening ? "bg-blue-100 animate-pulse ring-2 ring-blue-400" : ""
+                  }`}
+                  disabled={loading}
+                  tabIndex={-1}
+                  title="Voice input"
+                  type="button"
+                  onClick={handleVoiceInput}
+                >
+                  <svg
+                    className={`h-7 w-7 ${listening ? "text-blue-600" : "text-gray-500"}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 18v2m0 0h3m-3 0H9m6-6a3 3 0 01-6 0V9a3 3 0 016 0v6z"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                    />
+                  </svg>
+                  <span className="sr-only">Voice input</span>
+                  {listening && (
+                    <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-blue-500 animate-ping" />
+                  )}
+                </button>
+
+                {/* Send Button */}
+                <button
+                  className="ml-2 p-3 rounded-full bg-gradient-to-br from-blue-500 to-blue-400 hover:from-blue-600 hover:to-blue-500 text-white shadow-xl border-2 border-blue-200 transition disabled:opacity-60"
+                  disabled={loading || (!prompt.trim() && selectedFiles.length === 0)}
+                  title="Send"
+                  type="submit"
+                >
+                  <svg
+                    className="w-7 h-7"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M2.94 2.94a1.5 1.5 0 012.12 0l12 12a1.5 1.5 0 01-2.12 2.12l-12-12a1.5 1.5 0 010-2.12z" />
+                    <path stroke="#fff" strokeLinecap="round" strokeWidth="2" d="M13.5 6.5l-7 7" />
+                  </svg>
+                </button>
+              </form>
+
+              {/* Custom Scrollbar Styles */}
+              <style>
+                {`
+                  .custom-scrollbar::-webkit-scrollbar {
+                    width: 8px;
+                    background: transparent;
+                  }
+                  .custom-scrollbar::-webkit-scrollbar-thumb {
+                    background: #c7d2fe;
+                    border-radius: 8px;
+                  }
+                  .custom-scrollbar {
+                    scrollbar-width: thin;
+                    scrollbar-color: #c7d2fe #f1f5fd;
+                  }
+                  @keyframes spin-slow {
+                    0% { transform: rotate(0deg);}
+                    100% { transform: rotate(360deg);}
+                  }
+                  .animate-spin-slow {
+                    animation: spin-slow 8s linear infinite;
+                  }
+                `}
+              </style>
+            </Card>
         </div>
       </section>
     </DefaultLayout>
