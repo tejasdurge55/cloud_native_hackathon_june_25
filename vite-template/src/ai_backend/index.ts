@@ -1,48 +1,54 @@
-import { GoogleGenAI } from '@google/genai';
-
-const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
+import { GoogleGenAI, Modality } from "@google/genai";
+import fs from "fs/promises";
+import path from "path";
 
 /**
- * Generates a video using Veo 2 from both image and text prompt.
- * @param imageFile - Input image file (e.g. from <input type="file">)
- * @param prompt - Textual description to guide video generation
- * @returns URL to video blob
+ * Generate an image using Gemini (Flash Image Generation) with both input image + prompt.
+ * @param imagePath – Path to the source image file
+ * @param prompt – Text prompt guiding the generation/edit
+ * @returns Blob URL representing the generated image
  */
-export async function generateVideoFromImageAndText(
-  imageFile: File,
+export async function generateImageFromImageAndTextBackend(
+  imagePath: string,
   prompt: string
 ): Promise<string> {
-  // Convert image to base64
-  const buffer = await imageFile.arrayBuffer();
-  const bytes = new Uint8Array(buffer);
-  const base64Image = btoa(String.fromCharCode(...bytes));
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) throw new Error("Missing GEMINI_API_KEY");
+  const ai = new GoogleGenAI({ apiKey });
 
-  // Send request to generate video
-  const operation = await ai.models.generateVideos({
-    model: 'veo-2.0-generate-001',
-    prompt: prompt,
-    image: {
-      imageBytes: base64Image,
-      mimeType: imageFile.type,
-    },
+  // Read and encode image file
+  const buf = await fs.readFile(imagePath);
+  const base64 = buf.toString("base64");
+  const mimeType = getMimeType(imagePath);
+
+  // Request multimodal generation
+  const resp = await ai.models.generateContent({
+    model: "gemini-2.0-flash-preview-image-generation",
+    contents: [
+      { text: prompt },
+      { inlineData: { data: base64, mimeType } }
+    ],
     config: {
-      aspectRatio: '16:9',
-      personGeneration: 'dont_allow',
+      responseModalities: [Modality.TEXT, Modality.IMAGE],
     },
   });
 
-  // Poll until the video generation is complete
-  let op = operation;
-  while (!op.done) {
-    await new Promise(resolve => setTimeout(resolve, 5000));
-    op = await ai.operations.getVideosOperation({ operation: op });
+  if (!resp.candidates?.[0]?.content?.parts) {
+    throw new Error("Invalid response format from Gemini API");
   }
+  const parts = resp.candidates[0].content.parts;
+  const imgPart = parts.find(p => p.inlineData);
+  if (!imgPart?.inlineData) throw new Error("No image returned");
 
-  const videoUri = op.response?.generatedVideos?.[0]?.video?.uri;
-  if (!videoUri) throw new Error('No video URI returned');
-
-  // Fetch and return blob URL
-  const response = await fetch(`${videoUri}&key=${import.meta.env.VITE_GEMINI_API_KEY}`);
-  const blob = await response.blob();
+  if (!imgPart.inlineData.data) throw new Error("Image data is empty");
+  const imgBuf = Buffer.from(imgPart.inlineData.data, "base64");
+  const blob = new Blob([imgBuf], { type: mimeType });
   return URL.createObjectURL(blob);
+}
+
+function getMimeType(filePath: string): string {
+  const ext = path.extname(filePath).toLowerCase();
+  if (ext === ".png") return "image/png";
+  if (ext === ".jpg" || ext === ".jpeg") return "image/jpeg";
+  throw new Error(`Unsupported image type: ${ext}`);
 }
