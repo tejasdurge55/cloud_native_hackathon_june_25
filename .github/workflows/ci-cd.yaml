@@ -8,6 +8,8 @@ on:
 
 env:
   IMAGE_NAME: tejasdurge55/chatbot-webapp
+  IMAGE_NAME_TWO: tejasdurge55/imagebot-webapp
+
   TARGET_REPO: tejasdurge55/deployment-argocd
   DEPLOYMENT_FILE_PATH: deployment.yaml
   DEPLOYMENT_IMAGE_NAME: tejasdurge55/chatbot-webapp
@@ -86,6 +88,8 @@ jobs:
         # docker push $IMAGE_NAME:$SHORT_SHA
         docker build -t $IMAGE_NAME:latest ./vite-template
         docker push $IMAGE_NAME:latest
+        docker build -t $IMAGE_NAME_TWO:latest ./vite-template2
+        docker push $IMAGE_NAME_TWO:latest
 
     - name: Run Trivy image scan
       uses: aquasecurity/trivy-action@0.11.2

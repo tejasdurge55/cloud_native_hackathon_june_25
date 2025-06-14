@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: imagebot-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: imagebot
+  template:
+    metadata:
+      labels:
+        app: imagebot
+    spec:
+      containers:
+      - name: imagebot
+        image: tejasdurge55/imagebot-webapp
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "70m"
+            memory: "200Mi"
+          limits:
+            cpu: "100m"
+            memory: "250Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: imagebot-service
+spec:
+  selector:
+    app: imagebot
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: ClusterIP
