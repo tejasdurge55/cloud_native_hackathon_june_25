@@ -1,7 +1,7 @@
 CREATE TABLE messages (
   id SERIAL PRIMARY KEY,
-  role TEXT NOT NULL,          -- 'user' or 'model'
-  content TEXT NOT NULL,              -- message text
+  role TEXT NOT NULL,          
+  content TEXT NOT NULL,              
   timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
