@@ -21,5 +21,3 @@ spec:
         backend:
           service:
             name: chatbot-service
-            port:
-              number: 80

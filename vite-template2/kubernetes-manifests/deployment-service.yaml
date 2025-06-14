@@ -17,13 +17,6 @@ spec:
         image: tejasdurge55/chatbot-webapp
         ports:
         - containerPort: 80
-        resources:
-          requests:
-            cpu: "70m"
-            memory: "200Mi"
-          limits:
-            cpu: "100m"
-            memory: "250Mi"
 ---
 apiVersion: v1
 kind: Service
