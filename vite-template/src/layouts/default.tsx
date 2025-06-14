@@ -237,62 +237,62 @@ export default function DefaultLayout({
             </span>
           </div>
           {/* Animated progress bar */}
-            {/* Animated Aurora Achievement Wheel */}
-            <div className="mt-6 w-full flex flex-col items-center">
-              <div className="relative w-44 h-44 flex items-center justify-center">
+          {/* Animated Aurora Achievement Wheel */}
+          <div className="mt-6 w-full flex flex-col items-center">
+            <div className="relative w-44 h-44 flex items-center justify-center">
               {/* Aurora Glow */}
               <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-cyan-200 via-indigo-200 to-pink-200 blur-2xl opacity-60 animate-glow" />
               {/* Rotating Dots */}
               {[...Array(8)].map((_, i) => (
                 <div
-                key={i}
-                className="absolute w-6 h-6 rounded-full flex items-center justify-center"
-                style={{
-                  left: `calc(50% - 1.5rem + ${80 * Math.cos((i * Math.PI) / 4)}px)`,
-                  top: `calc(50% - 1.5rem + ${80 * Math.sin((i * Math.PI) / 4)}px)`,
-                  animation: `orbit-dot 6s linear infinite`,
-                  animationDelay: `${i * 0.3}s`,
-                }}
+                  key={i}
+                  className="absolute w-6 h-6 rounded-full flex items-center justify-center"
+                  style={{
+                    left: `calc(50% - 1.5rem + ${80 * Math.cos((i * Math.PI) / 4)}px)`,
+                    top: `calc(50% - 1.5rem + ${80 * Math.sin((i * Math.PI) / 4)}px)`,
+                    animation: `orbit-dot 6s linear infinite`,
+                    animationDelay: `${i * 0.3}s`,
+                  }}
                 >
-                <div
-                  className={`w-5 h-5 rounded-full shadow-lg ${
-                  i === 0
-                    ? "bg-gradient-to-tr from-cyan-400 to-blue-400"
-                    : i === 2
-                    ? "bg-gradient-to-tr from-pink-400 to-yellow-300"
-                    : i === 4
-                    ? "bg-gradient-to-tr from-yellow-200 to-cyan-200"
-                    : i === 6
-                    ? "bg-gradient-to-tr from-pink-200 to-blue-100"
-                    : "bg-white/80"
-                  } border-2 border-white`}
-                />
+                  <div
+                    className={`w-5 h-5 rounded-full shadow-lg ${
+                      i === 0
+                        ? "bg-gradient-to-tr from-cyan-400 to-blue-400"
+                        : i === 2
+                          ? "bg-gradient-to-tr from-pink-400 to-yellow-300"
+                          : i === 4
+                            ? "bg-gradient-to-tr from-yellow-200 to-cyan-200"
+                            : i === 6
+                              ? "bg-gradient-to-tr from-pink-200 to-blue-100"
+                              : "bg-white/80"
+                    } border-2 border-white`}
+                  />
                 </div>
               ))}
               {/* Center Trophy */}
               <div className="relative z-10 w-20 h-20 rounded-full bg-gradient-to-tr from-cyan-400 via-blue-300 to-indigo-400 flex items-center justify-center shadow-2xl border-4 border-white animate-spin-slow">
-                <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
-                <circle cx="19" cy="19" r="17" fill="#fff" opacity="0.18" />
-                <path
-                  d="M13 25h12M19 25v-2M15 13h8v4a4 4 0 01-8 0v-4z"
-                  stroke="#fff"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
+                <svg fill="none" height="38" viewBox="0 0 38 38" width="38">
+                  <circle cx="19" cy="19" fill="#fff" opacity="0.18" r="17" />
+                  <path
+                    d="M13 25h12M19 25v-2M15 13h8v4a4 4 0 01-8 0v-4z"
+                    stroke="#fff"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                  />
                 </svg>
               </div>
               {/* Animated Sparkles */}
               {[...Array(6)].map((_, i) => (
                 <div
-                key={i}
-                className="absolute w-2 h-2 rounded-full bg-gradient-to-tr from-cyan-300 via-white to-indigo-400 opacity-80 animate-sparkle"
-                style={{
-                  left: `${50 + 40 * Math.cos((i * Math.PI) / 3)}%`,
-                  top: `${50 + 40 * Math.sin((i * Math.PI) / 3)}%`,
-                  transform: "translate(-50%, -50%)",
-                  animationDelay: `${i * 0.4}s`,
-                }}
+                  key={i}
+                  className="absolute w-2 h-2 rounded-full bg-gradient-to-tr from-cyan-300 via-white to-indigo-400 opacity-80 animate-sparkle"
+                  style={{
+                    left: `${50 + 40 * Math.cos((i * Math.PI) / 3)}%`,
+                    top: `${50 + 40 * Math.sin((i * Math.PI) / 3)}%`,
+                    transform: "translate(-50%, -50%)",
+                    animationDelay: `${i * 0.4}s`,
+                  }}
                 />
               ))}
               {/* CSS for orbit-dot animation */}
@@ -304,30 +304,41 @@ export default function DefaultLayout({
                 }
                 `}
               </style>
-              </div>
-              {/* Achievement Labels */}
-              <div className="grid grid-cols-2 gap-3 mt-6 w-full">
+            </div>
+            {/* Achievement Labels */}
+            <div className="grid grid-cols-2 gap-3 mt-6 w-full">
               <div className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-full bg-cyan-400 animate-twinkle" />
-                <span className="text-xs font-semibold text-cyan-700">Kickoff</span>
+                <span className="text-xs font-semibold text-cyan-700">
+                  Kickoff
+                </span>
               </div>
               <div className="flex items-center gap-2 justify-end">
-                <span className="text-xs font-semibold text-pink-700">Prototype</span>
+                <span className="text-xs font-semibold text-pink-700">
+                  Prototype
+                </span>
                 <span className="w-3 h-3 rounded-full bg-pink-400 animate-twinkle" />
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-full bg-yellow-400 animate-twinkle" />
-                <span className="text-xs font-semibold text-yellow-700">Collaboration</span>
+                <span className="text-xs font-semibold text-yellow-700">
+                  Collaboration
+                </span>
               </div>
               <div className="flex items-center gap-2 justify-end">
-                <span className="text-xs font-semibold text-indigo-700">Submission</span>
+                <span className="text-xs font-semibold text-indigo-700">
+                  Submission
+                </span>
                 <span className="w-3 h-3 rounded-full bg-indigo-400 animate-twinkle" />
               </div>
-              </div>
-              <div className="text-xs text-gray-500 mt-4 animate-fade-in">
-              <span className="font-semibold text-cyan-600"> Achievements Unlocked!</span>
-              </div>
             </div>
+            <div className="text-xs text-gray-500 mt-4 animate-fade-in">
+              <span className="font-semibold text-cyan-600">
+                {" "}
+                Achievements Unlocked!
+              </span>
+            </div>
+          </div>
           {/* NEW: Team Members */}
           <div className="mt-8">
             <div className="text-base font-semibold text-blue-800 mb-2 flex items-center gap-2">
@@ -385,11 +396,12 @@ export default function DefaultLayout({
           {/* NEW: Spotlight Modal Trigger */}
           <div className="mt-8">
             <button
-              type="button"
               className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 text-white font-semibold rounded-xl shadow-lg hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-cyan-300 animate-fade-in"
+              type="button"
               onClick={() => {
                 const modal = document.getElementById("spotlight-modal");
-                if (modal) modal.showModal();
+
+                if (modal) (modal as HTMLDialogElement).showModal();
               }}
             >
               <svg
@@ -411,8 +423,8 @@ export default function DefaultLayout({
             </button>
             {/* Modal */}
             <dialog
-              id="spotlight-modal"
               className="rounded-2xl shadow-2xl p-0 border-0 max-w-md w-full bg-white/95 backdrop:bg-black/40 animate-fade-in"
+              id="spotlight-modal"
             >
               <div className="p-6 flex flex-col items-center gap-4">
                 <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-cyan-400 via-blue-300 to-indigo-400 flex items-center justify-center shadow-xl animate-spin-slow">
@@ -438,8 +450,8 @@ export default function DefaultLayout({
                     <a
                       className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-cyan-50 transition"
                       href="https://cloud.google.com/"
-                      target="_blank"
                       rel="noopener noreferrer"
+                      target="_blank"
                     >
                       <span className="w-2 h-2 rounded-full bg-cyan-400" />
                       Cloud Docs
@@ -449,8 +461,8 @@ export default function DefaultLayout({
                     <a
                       className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-indigo-50 transition"
                       href="https://github.com/"
-                      target="_blank"
                       rel="noopener noreferrer"
+                      target="_blank"
                     >
                       <span className="w-2 h-2 rounded-full bg-indigo-400" />
                       GitHub Repo
@@ -460,8 +472,8 @@ export default function DefaultLayout({
                     <a
                       className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-pink-50 transition"
                       href="https://www.linkedin.com/company/cncg-pune/ "
-                      target="_blank"
                       rel="noopener noreferrer"
+                      target="_blank"
                     >
                       <span className="w-2 h-2 rounded-full bg-pink-400" />
                       Hackathon Portal
@@ -469,11 +481,12 @@ export default function DefaultLayout({
                   </li>
                 </ul>
                 <button
-                  type="button"
                   className="mt-4 px-4 py-2 bg-gradient-to-r from-cyan-400 to-indigo-400 text-white rounded-lg font-semibold shadow hover:scale-105 transition-transform"
+                  type="button"
                   onClick={() => {
                     const modal = document.getElementById("spotlight-modal");
-                    if (modal) modal.close();
+
+                    if (modal) (modal as HTMLDialogElement).close();
                   }}
                 >
                   Close
@@ -541,8 +554,8 @@ export default function DefaultLayout({
 
       {/* Footer */}
       <footer className="w-full py-4 text-center text-gray-600 text-sm border-t bg-white/90 mt-auto">
-        © {new Date().getFullYear()} Cloud Native hackathon. Crafted with ♥
-        by Pratima, Shubham, Ajay and Tejas
+        © {new Date().getFullYear()} Cloud Native hackathon. Crafted with ♥ by
+        Pratima, Shubham, Ajay and Tejas
       </footer>
     </div>
   );
