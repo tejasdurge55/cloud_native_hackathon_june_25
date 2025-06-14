@@ -100,7 +100,7 @@ jobs:
     - name: Clone deployment repo
       uses: actions/checkout@v3
       with:
-        repository: ${{ vars.TARGET_REPO }}
+        # repository: ${{ vars.TARGET_REPO }}
         token: ${{ secrets.PAT_TOKEN }}  # PAT with write access
         # path: deployment-repo
 
