@@ -4,15 +4,20 @@ metadata:
   name: nginx-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: nginx
+
 spec:
+  tls:
+  - hosts:
+    - dummy.flyku.com
+    secretName: userapi-tls
   ingressClassName: nginx
   rules:
-  - http:
+  - host: dummy.flyku.com
+    http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
             name: chatbot-service
-            port:
-              number: 80
